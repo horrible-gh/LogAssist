@@ -25,7 +25,7 @@ from Logger.log import Logger
 2. Initialize the logger with your desired settings:
 
 ```python
-Logger.init(log_level='debug', dir_name='./log', file_name='my_log.log', is_log_remove=True, out_console=True, out_file=True)
+Logger.init(log_level='debug', dir_name='./log', file_name='my_log.log', prev_log_remove=True, out_console=True, out_file=True)
 ```
 
 3. Use the logger in your code:
@@ -44,6 +44,6 @@ You can configure the logger using the init method or by passing a dictionary of
 - log_level: The log level to set (debug, info, warning, or error). Default is 'debug'.
 - dir_name: The directory name to use for log files. Default is './log'.
 - file_name: The file name to use for logging. Default is None, which will create a file named "Logger.log".
-- is_log_remove: Whether to remove the existing log file on initialization. Default is False.
+- prev_log_remove: Whether to remove the existing log file on initialization. Default is False.
 - out_console: Whether to output log messages to the console. Default is True.
 - out_file: Whether to output log messages to a file. Default is True.

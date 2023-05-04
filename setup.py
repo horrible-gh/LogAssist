@@ -6,7 +6,7 @@ setup(
     description='Logger package',
     author='horrible-gh',
     author_email='shinjpn1@gmail.com',
-    url='https://shinjpn-gitea.duckdns.org/gitea/sjm/ModularRL.git',
+    url='https://github.com/horrible-gh/Logger.git',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',

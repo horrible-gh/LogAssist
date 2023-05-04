@@ -40,20 +40,20 @@ class Logger:
     log_level = level_list['info']
 
     # Initialize the logger with the specified log level, file name, and log removal option
-    def init(log_level='debug', dir_name='./log', file_name=None, is_log_remove=False, out_console=True, out_file=True):
+    def init(log_level='debug', dir_name='./log', file_name=None, prev_log_remove=False, out_console=True, out_file=True):
         """
         Initialize the logger with the specified log level, directory name, file name, and log removal option.
 
         :param log_level: The log level to set (debug, info, warning, or error). Default is 'debug'.
         :param dir_name: The directory name to use for log files. Default is './log'.
         :param file_name: The file name to use for logging. Default is None, which will create a file named "Logger.log".
-        :param is_log_remove: Whether to remove the existing log file on initialization. Default is False.
+        :param prev_log_remove: Whether to remove the existing log file on initialization. Default is False.
         :param out_console: Whether to output log messages to the console. Default is True.
         :param out_file: Whether to output log messages to a file. Default is True.
         """
         Logger.set_log_level(log_level)
         Logger.file_name = file_name
-        Logger.log_info['prev_remove'] = is_log_remove
+        Logger.log_info['prev_remove'] = prev_log_remove
         if Logger.log_info['prev_remove']:
             Logger.log_remove()
         Logger.log_info['dir_name'] = dir_name
