@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "LogAssist"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="horrible", email="shinjpn1@gmail.com" },
 ]
@@ -16,6 +16,8 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+keywords=['LogAssist', 'Log Assist', 'logassist', 'log assist',  'Logger',  'logger']
+
 
 [project.urls]
 "Homepage" = "https://github.com/horrible-gh/Logger"
