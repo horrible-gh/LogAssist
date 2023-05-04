@@ -19,7 +19,7 @@ Preparing for pypi
 1. Import the Logger class:
 
 ```python
-from logger import Logger
+from Logger.log import Logger
 ```
 
 2. Initialize the logger with your desired settings:
