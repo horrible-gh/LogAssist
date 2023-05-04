@@ -4,7 +4,7 @@ A simple and customizable logging library for Python.
 
 ## Installation
 
-Preparing for pypi
+pip install LogAssist
 
 ## Features
 
