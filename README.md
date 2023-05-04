@@ -4,7 +4,9 @@ A simple and customizable logging library for Python.
 
 ## Installation
 
+```powershell
 pip install LogAssist
+```
 
 ## Features
 
