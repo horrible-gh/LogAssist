@@ -34,13 +34,14 @@ class Logger:
         'out_console': True,
         'out_file': True,
         'dir_name': './log',
+        'log_file': 'Logger.log',
         'log_level': 'debug',
     }
 
     log_level = level_list['info']
 
     # Initialize the logger with the specified log level, file name, and log removal option
-    def init(log_level='debug', dir_name='./log', file_name=None, prev_log_remove=False, out_console=True, out_file=True):
+    def init(log_level='debug', dir_name='./log', file_name='Logger.log', prev_log_remove=False, out_console=True, out_file=True):
         """
         Initialize the logger with the specified log level, directory name, file name, and log removal option.
 
@@ -60,6 +61,7 @@ class Logger:
         Logger.log_info['log_level'] = log_level
         Logger.log_info['out_console'] = out_console
         Logger.log_info['out_file'] = out_file
+        Logger.log_info['log_file'] = file_name
 
     # Initialize the logger with the specified logger information
     @staticmethod
@@ -122,7 +124,7 @@ class Logger:
             if not os.path.exists(new_dir_path):
                 os.makedirs(new_dir_path)
             if Logger.log_info['out_file']:
-                with open(Logger.log_info['dir_name'] + "/" + Logger.file_name, mode="a") as file:
+                with open(Logger.log_info['dir_name'] + "/" + Logger.log_info['log_file'], mode="a") as file:
                     file.write(log_f)
 
     # Log a debug message
