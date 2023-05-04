@@ -1,4 +1,4 @@
-# Logger
+# LogAssist
 
 A simple and customizable logging library for Python.
 
@@ -19,7 +19,7 @@ Preparing for pypi
 1. Import the Logger class:
 
 ```python
-from Logger.log import Logger
+from LogAssist.log import Logger
 ```
 
 2. Initialize the logger with your desired settings:

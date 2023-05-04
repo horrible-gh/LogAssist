@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Logger',
+    name='LogAssist',
     version='1.0.0',
-    description='Logger package',
+    description='LogAssist package',
     author='horrible-gh',
     author_email='shinjpn1@gmail.com',
-    url='https://github.com/horrible-gh/Logger.git',
+    url='https://github.com/horrible-gh/LogAssist.git',
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
