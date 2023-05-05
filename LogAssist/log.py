@@ -10,19 +10,22 @@ class Logger:
 
     # A dictionary to map logging levels to integers
     level_list = {
-        'error': 4,
-        'warning': 3,
-        'warn': 3,
-        'info': 2,
-        'debug': 1,
+        'error': 40,
+        'warning': 30,
+        'warn': 30,
+        'info': 20,
+        'debug': 10,
+        'verbose': 5,
+        'verb': 5,
     }
 
     # A dictionary to map integers to logging level strings
     level_str_list = {
-        1: 'DEBUG',
-        2: 'INFO',
-        3: 'WARN',
-        4: 'ERROR'
+        5: 'VERB',
+        10: 'DEBUG',
+        20: 'INFO',
+        30: 'WARN',
+        40: 'ERROR'
     }
 
     # Default file name for logging
@@ -41,7 +44,7 @@ class Logger:
     log_level = level_list['info']
 
     # Initialize the logger with the specified log level, file name, and log removal option
-    def init(log_level='debug', dir_name='./log', file_name='Logger.log', prev_log_remove=False, out_console=True, out_file=True):
+    def init(log_level='verbose', dir_name='./log', file_name='Logger.log', prev_log_remove=False, out_console=True, out_file=True):
         """
         Initialize the logger with the specified log level, directory name, file name, and log removal option.
 
@@ -127,6 +130,28 @@ class Logger:
                 with open(Logger.log_info['dir_name'] + "/" + Logger.log_info['log_file'], mode="a") as file:
                     file.write(log_f)
 
+    # Log a verbose message
+    @staticmethod
+    def verbose(tag: str, message: str = "") -> None:
+        """
+        Logs a debug message.
+
+        :param tag: The tag to use for the log message.
+        :param message: The message to log.
+        """
+        Logger.log_print(tag, message, 5)
+
+    # Log a verbose message
+    @staticmethod
+    def verb(tag: str, message: str = "") -> None:
+        """
+        Logs a debug message.
+
+        :param tag: The tag to use for the log message.
+        :param message: The message to log.
+        """
+        Logger.log_print(tag, message, 5)
+
     # Log a debug message
     @staticmethod
     def debug(tag: str, message: str = "") -> None:
@@ -136,7 +161,7 @@ class Logger:
         :param tag: The tag to use for the log message.
         :param message: The message to log.
         """
-        Logger.log_print(tag, message, 1)
+        Logger.log_print(tag, message, 10)
 
     # Log an info message
     @staticmethod
@@ -147,7 +172,7 @@ class Logger:
         :param tag: The tag to use for the log message.
         :param message: The message to log.
         """
-        Logger.log_print(tag, message, 2)
+        Logger.log_print(tag, message, 20)
 
     # Log a warning message
     @staticmethod
@@ -158,7 +183,7 @@ class Logger:
         :param tag: The tag to use for the log message.
         :param message: The message to log.
         """
-        Logger.log_print(tag, message, 3)
+        Logger.log_print(tag, message, 30)
 
     # Log a warning message (alias for warning)
     @staticmethod
@@ -169,7 +194,7 @@ class Logger:
         :param tag: The tag to use for the log message.
         :param message: The message to log.
         """
-        Logger.log_print(tag, message, 3)
+        Logger.log_print(tag, message, 30)
 
     # Log an error message
     def error(tag: str, message: str = "", exc_info: tuple[None, None, None] = None) -> None:
@@ -180,4 +205,4 @@ class Logger:
         :param message: The message to log.
         :param exc_info: The exception information to log.
         """
-        Logger.log_print(tag, message, 4, exc_info)
+        Logger.log_print(tag, message, 40, exc_info)
