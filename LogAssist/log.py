@@ -10,6 +10,7 @@ class Logger:
 
     # A dictionary to map logging levels to integers
     level_list = {
+        'none': 99,
         'error': 40,
         'warning': 30,
         'warn': 30,
@@ -123,12 +124,13 @@ class Logger:
                 log_f += traceback_str
             if Logger.log_info['out_console']:
                 print(log_p)
-            new_dir_path = Logger.log_info['dir_name'] + "/"
-            if not os.path.exists(new_dir_path):
-                os.makedirs(new_dir_path)
             if Logger.log_info['out_file']:
-                with open(Logger.log_info['dir_name'] + "/" + Logger.log_info['log_file'], mode="a") as file:
-                    file.write(log_f)
+                new_dir_path = Logger.log_info['dir_name'] + "/"
+                if not os.path.exists(new_dir_path):
+                    os.makedirs(new_dir_path)
+                if Logger.log_info['out_file']:
+                    with open(new_dir_path + Logger.log_info['log_file'], mode="a") as file:
+                        file.write(log_f)
 
     # Log a verbose message
     @staticmethod
