@@ -59,10 +59,16 @@ class Logger:
         Logger.log_info['log_level'] = log_level
         Logger.log_info['out_console'] = out_console
         Logger.log_info['out_file'] = out_file
-        Logger.log_info['log_dir'] = dir_name
+        if dir_name:
+            Logger.log_info['log_dir'] = dir_name
+        else:
+            Logger.log_info['log_dir'] = None
         Logger.log_info['log_file'] = file_name
-        Logger.log_info['log_path'] = Logger.log_info['log_dir'] + \
-            "/" + Logger.log_info['log_file']
+        if Logger.log_info['log_dir']:
+            Logger.log_info['log_path'] = Logger.log_info['log_dir'] + \
+                "/" + Logger.log_info['log_file']
+        else:
+            Logger.log_info['log_path'] = Logger.log_info['log_file']
         if Logger.log_info['prev_remove']:
             Logger.log_remove()
 
@@ -113,11 +119,12 @@ class Logger:
             if Logger.log_info['out_console']:
                 print(log_p)
             if Logger.log_info['out_file']:
-                new_dir_path = Logger.log_info['log_dir'] + "/"
-                if not os.path.exists(new_dir_path):
-                    os.makedirs(new_dir_path)
+                if Logger.log_info['log_dir']:
+                    new_dir_path = Logger.log_info['log_dir'] + "/"
+                    if not os.path.exists(new_dir_path):
+                        os.makedirs(new_dir_path)
                 if Logger.log_info['out_file']:
-                    with open(new_dir_path + Logger.log_info['log_file'], mode="a") as file:
+                    with open(Logger.log_info['log_path'], mode="a") as file:
                         file.write(log_f)
 
     # Log a verbose message
