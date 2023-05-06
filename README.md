@@ -28,6 +28,8 @@ from LogAssist.log import Logger
 
 ```python
 Logger.init(log_level='verbose', dir_name='./log', file_name='my_log.log', prev_log_remove=True, out_console=True, out_file=True)
+# or
+Logger.init()
 ```
 
 3. Use the logger in your code:

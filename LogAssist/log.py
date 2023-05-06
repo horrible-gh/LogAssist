@@ -29,17 +29,15 @@ class Logger:
         40: 'ERROR'
     }
 
-    # Default file name for logging
-    file_name = 'Logger.log'
-
     # Logger information and configuration
     log_info = {
         'prev_remove': False,
         'out_console': True,
         'out_file': True,
+        'log_level': 'debug',
         'dir_name': './log',
         'log_file': 'Logger.log',
-        'log_level': 'debug',
+        'log_path': '',
     }
 
     log_level = level_list['info']
@@ -57,26 +55,16 @@ class Logger:
         :param out_file: Whether to output log messages to a file. Default is True.
         """
         Logger.set_log_level(log_level)
-        Logger.file_name = file_name
         Logger.log_info['prev_remove'] = prev_log_remove
-        if Logger.log_info['prev_remove']:
-            Logger.log_remove()
-        Logger.log_info['dir_name'] = dir_name
         Logger.log_info['log_level'] = log_level
         Logger.log_info['out_console'] = out_console
         Logger.log_info['out_file'] = out_file
+        Logger.log_info['log_dir'] = dir_name
         Logger.log_info['log_file'] = file_name
-
-    # Initialize the logger with the specified logger information
-    @staticmethod
-    def logger_init(log_info):
-        """
-        :param log_info: a dictionary of logger information, including log level, file name, and logging options
-        """
-        Logger.log_info = log_info
+        Logger.log_info['log_path'] = Logger.log_info['log_dir'] + \
+            "/" + Logger.log_info['log_file']
         if Logger.log_info['prev_remove']:
             Logger.log_remove()
-        Logger.set_log_level(Logger.log_info['log_level'])
 
     # Set the logging level
     @staticmethod
@@ -102,8 +90,8 @@ class Logger:
         Remove the log file if the log_remove option is enabled
         """
         if Logger.log_info['prev_remove']:
-            if os.path.exists(Logger.file_name):
-                os.remove(Logger.file_name)
+            if os.path.exists(Logger.log_info['log_path']):
+                os.remove(Logger.log_info['log_path'])
 
     # Print a log message
     def log_print(tag, message, level, exc_info=None):
@@ -125,7 +113,7 @@ class Logger:
             if Logger.log_info['out_console']:
                 print(log_p)
             if Logger.log_info['out_file']:
-                new_dir_path = Logger.log_info['dir_name'] + "/"
+                new_dir_path = Logger.log_info['log_dir'] + "/"
                 if not os.path.exists(new_dir_path):
                     os.makedirs(new_dir_path)
                 if Logger.log_info['out_file']:
