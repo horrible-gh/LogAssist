@@ -59,11 +59,16 @@ class Logger:
         Logger.log_info['log_level'] = log_level
         Logger.log_info['out_console'] = out_console
         Logger.log_info['out_file'] = out_file
-        if dir_name:
+        if Logger.log_info['out_file'] and dir_name:
             Logger.log_info['log_dir'] = dir_name
+            Logger.log_info['log_file'] = file_name
+        elif Logger.log_info['out_file'] and file_name:
+            Logger.log_info['log_dir'] = "./"
+            Logger.log_info['log_file'] = file_name
         else:
             Logger.log_info['log_dir'] = None
-        Logger.log_info['log_file'] = file_name
+            Logger.log_info['log_file'] = None
+
         if Logger.log_info['log_dir']:
             Logger.log_info['log_path'] = Logger.log_info['log_dir'] + \
                 "/" + Logger.log_info['log_file']

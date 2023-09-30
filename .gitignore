@@ -10,6 +10,8 @@ work
 test.pth
 data
 .pypirc
+reinstall_local.*
+release.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
