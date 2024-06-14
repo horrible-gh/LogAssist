@@ -72,20 +72,23 @@ Example Usage:
 
 ## Configuration Fields
 
--   base
-    name: The identifier for the logger. Default is 'MyLogger'.
-    level: The minimum log level to set (debug, info, warn, error, exception). Default is 'debug'.
+### base
 
--   console
-    level: The minimum log level for console output (debug, info, warn, error, exception). Default is 'debug'.
-    format: Defines the log message format for console output. Default is %(asctime)s[%(levelname)s]%(message)s.
+-   name: The identifier for the logger. Default is 'MyLogger'.
+-   level: The minimum log level to set (debug, info, warn, error, exception). Default is 'debug'.
 
--   file_timed
-    level: The minimum log level for file output (debug, info, warn, error, exception). Default is 'info'.
-    format: Defines the log message format for file output. Default is %(asctime)s[%(levelname)s]%(message)s.
-    file_name: The file name to use for logging. Default is 'default.log'.
-    when: The time interval for rotating the log file (e.g., 'midnight'). Default is 'midnight'.
-    interval: Defines how often the log file is rotated. Default is 1.
-    backup_count: Specifies the number of backup files to keep. Default is 30.
+### console
+
+-   level: The minimum log level for console output (debug, info, warn, error, exception). Default is 'debug'.
+-   format: Defines the log message format for console output. Default is %(asctime)s[%(levelname)s]%(message)s.
+
+### file_timed
+
+-   level: The minimum log level for file output (debug, info, warn, error, exception). Default is 'info'.
+-   format: Defines the log message format for file output. Default is %(asctime)s[%(levelname)s]%(message)s.
+-   file_name: The file name to use for logging. Default is 'default.log'.
+-   when: The time interval for rotating the log file (e.g., 'midnight'). Default is 'midnight'.
+-   interval: Defines how often the log file is rotated. Default is 1.
+-   backup_count: Specifies the number of backup files to keep. Default is 30.
 
 Use this JSON configuration to initialize your logger with the desired settings.
