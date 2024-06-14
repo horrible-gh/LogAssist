@@ -1,210 +1,168 @@
-# -*- coding: utf-8 -*-
-import datetime
 import os
-import traceback
+import logging
+from logging.handlers import TimedRotatingFileHandler
 
-# A class that provides logging functionality
+logger = logging.getLogger(__name__)
+initialized = False
 
-
-class Logger:
-
-    # A dictionary to map logging levels to integers
-    level_list = {
-        'none': 99,
-        'error': 40,
-        'warning': 30,
-        'warn': 30,
-        'info': 20,
-        'debug': 10,
-        'verbose': 5,
-        'verb': 5,
+global_config = {
+    "base": {
+        "name": "MyLogger",
+        "level": "debug",
+    },
+    "console": {
+        "level": "debug",
+        "format": "%(asctime)s[%(levelname)s]%(message)s"
+    },
+    "file_timed": {
+        "level": "info",
+        "format": "%(asctime)s[%(levelname)s]%(message)s",
+        "file_name": "default.log",
+        "when": "midnight",
+        "interval": 1,
+        "backup_count": 30
     }
+}
 
-    # A dictionary to map integers to logging level strings
-    level_str_list = {
-        5: 'VERB',
-        10: 'DEBUG',
-        20: 'INFO',
-        30: 'WARN',
-        40: 'ERROR'
-    }
 
-    # Logger information and configuration
-    log_info = {
-        'prev_remove': False,
-        'out_console': True,
-        'out_file': True,
-        'log_level': 'debug',
-        'dir_name': './log',
-        'log_file': 'Logger.log',
-        'log_path': '',
-    }
+def _get_file_timed_handler(config):
+    """
+    Create a timed rotating file handler with the given configuration.
 
-    log_level = level_list['info']
+    :param config: A dictionary containing the configuration for the file handler.
+    :return: A configured TimedRotatingFileHandler.
+    """
+    log_level = config['level'].upper()
+    log_format = config['format']
 
-    # Initialize the logger with the specified log level, file name, and log removal option
-    def init(log_level='verbose', dir_name='./log', file_name='Logger.log', prev_log_remove=False, out_console=True, out_file=True):
-        """
-        Initialize the logger with the specified log level, directory name, file name, and log removal option.
+    log_dir = os.path.dirname(config['file_name'])
 
-        :param log_level: The log level to set (debug, info, warning, or error). Default is 'debug'.
-        :param dir_name: The directory name to use for log files. Default is './log'.
-        :param file_name: The file name to use for logging. Default is None, which will create a file named "Logger.log".
-        :param prev_log_remove: Whether to remove the existing log file on initialization. Default is False.
-        :param out_console: Whether to output log messages to the console. Default is True.
-        :param out_file: Whether to output log messages to a file. Default is True.
-        """
-        Logger.set_log_level(log_level)
-        Logger.log_info['prev_remove'] = prev_log_remove
-        Logger.log_info['log_level'] = log_level
-        Logger.log_info['out_console'] = out_console
-        Logger.log_info['out_file'] = out_file
-        if Logger.log_info['out_file'] and dir_name:
-            Logger.log_info['log_dir'] = dir_name
-            Logger.log_info['log_file'] = file_name
-        elif Logger.log_info['out_file'] and file_name:
-            Logger.log_info['log_dir'] = "./"
-            Logger.log_info['log_file'] = file_name
-        else:
-            Logger.log_info['log_dir'] = None
-            Logger.log_info['log_file'] = None
+    if log_dir != '' and not os.path.exists(log_dir):
+        os.makedirs(log_dir)
 
-        if Logger.log_info['log_dir']:
-            Logger.log_info['log_path'] = Logger.log_info['log_dir'] + \
-                "/" + Logger.log_info['log_file']
-        else:
-            Logger.log_info['log_path'] = Logger.log_info['log_file']
-        if Logger.log_info['prev_remove']:
-            Logger.log_remove()
+    handler = TimedRotatingFileHandler(
+        config['file_name'], when=config['when'], interval=config['interval'], backupCount=config['backup_count'])
 
-    # Set the logging level
-    @staticmethod
-    def set_log_level(log_level: str):
-        """
-        :param log_level: the log level to set (debug, info, warning, or error)
-        """
-        Logger.log_level = Logger.level_list[log_level]
+    level = getattr(logging, log_level, logging.NOTSET)
+    handler.setLevel(level)
+    handler.setFormatter(logging.Formatter(log_format))
 
-    # Get the current date and time
-    @staticmethod
-    def get_datetime() -> str:
-        """
-        :return: the current date and time in a formatted string
-        """
-        now = datetime.datetime.now()
-        return now.strftime("[%Y/%m/%d %H:%M:%S]")
+    return handler
 
-    # Remove the log file if the option is enabled
-    @staticmethod
-    def log_remove():
-        """
-        Remove the log file if the log_remove option is enabled
-        """
-        if Logger.log_info['prev_remove']:
-            if os.path.exists(Logger.log_info['log_path']):
-                os.remove(Logger.log_info['log_path'])
 
-    # Print a log message
-    def log_print(tag, message, level, exc_info=None):
-        """
-        Print a log message
+def _get_console_handler(config):
+    """
+    Create a console handler with the given configuration.
 
-        :param tag: The tag to add to the log message
-        :param message: The message to log
-        :param level: The log level of the message (1-4, with 1 being the most verbose and 4 being the least verbose)
-        :param exc_info: Optional traceback information
-        """
-        if level >= Logger.log_level:
-            log_p = f'{Logger.get_datetime()}[{Logger.level_str_list[level]}][{tag}]{message}'
-            log_f = f'{Logger.get_datetime()}[{Logger.level_str_list[level]}][{tag}]{message}\n'
-            if exc_info:
-                traceback_str = "".join(traceback.format_exception(*exc_info))
-                log_p += "\n" + traceback_str
-                log_f += traceback_str
-            if Logger.log_info['out_console']:
-                print(log_p)
-            if Logger.log_info['out_file']:
-                if Logger.log_info['log_dir']:
-                    new_dir_path = Logger.log_info['log_dir'] + "/"
-                    if not os.path.exists(new_dir_path):
-                        os.makedirs(new_dir_path)
-                if Logger.log_info['out_file']:
-                    with open(Logger.log_info['log_path'], mode="a") as file:
-                        file.write(log_f)
+    :param config: A dictionary containing the configuration for the console handler.
+    :return: A configured StreamHandler for console output.
+    """
+    console_handler = logging.StreamHandler()
 
-    # Log a verbose message
-    @staticmethod
-    def verbose(tag: str, message: str = "") -> None:
-        """
-        Logs a debug message.
+    log_level = config['level'].upper()
+    log_format = config['format']
 
-        :param tag: The tag to use for the log message.
-        :param message: The message to log.
-        """
-        Logger.log_print(tag, message, 5)
+    level = getattr(logging, log_level, logging.NOTSET)
+    console_handler.setLevel(level)
+    console_handler.setFormatter(logging.Formatter(log_format))
 
-    # Log a verbose message
-    @staticmethod
-    def verb(tag: str, message: str = "") -> None:
-        """
-        Logs a debug message.
+    return console_handler
 
-        :param tag: The tag to use for the log message.
-        :param message: The message to log.
-        """
-        Logger.log_print(tag, message, 5)
 
-    # Log a debug message
-    @staticmethod
-    def debug(tag: str, message: str = "") -> None:
-        """
-        Logs a debug message.
+def logger_init(config=None):
+    """
+    Initialize the logger with the given configuration.
 
-        :param tag: The tag to use for the log message.
-        :param message: The message to log.
-        """
-        Logger.log_print(tag, message, 10)
+    :param config: A dictionary containing the logger configuration. If None, uses global_config.
+    """
+    global global_config
+    if config is None:
+        config = global_config
 
-    # Log an info message
-    @staticmethod
-    def info(tag: str, message: str = "") -> None:
-        """
-        Logs an info message.
+    logger.setLevel(config['base']['level'].upper())
 
-        :param tag: The tag to use for the log message.
-        :param message: The message to log.
-        """
-        Logger.log_print(tag, message, 20)
+    timed_config = config.get("file_timed", None)
+    console_config = config.get("console", None)
 
-    # Log a warning message
-    @staticmethod
-    def warning(tag: str, message: str = "") -> None:
-        """
-        Logs a warning message.
+    if timed_config:
+        logger.addHandler(_get_file_timed_handler(timed_config))
+    if console_config:
+        logger.addHandler(_get_console_handler(console_config))
 
-        :param tag: The tag to use for the log message.
-        :param message: The message to log.
-        """
-        Logger.log_print(tag, message, 30)
+    global initialized
+    initialized = True
 
-    # Log a warning message (alias for warning)
-    @staticmethod
-    def warn(tag: str, message: str = "") -> None:
-        """
-        Logs a warning message (alias for warning).
 
-        :param tag: The tag to use for the log message.
-        :param message: The message to log.
-        """
-        Logger.log_print(tag, message, 30)
+def _chk_msg(tag="", msg=None) -> str:
+    """
+    Check and format the message for logging.
 
-    # Log an error message
-    def error(tag: str, message: str = "", exc_info: tuple[None, None, None] = None) -> None:
-        """
-        Logs an error message.
+    :param tag: A tag to prepend to the message.
+    :param msg: The message to log.
+    :return: A formatted message string.
+    """
+    global initialized
+    if not initialized:
+        logger_init()
 
-        :param tag: The tag to use for the log message.
-        :param message: The message to log.
-        :param exc_info: The exception information to log.
-        """
-        Logger.log_print(tag, message, 40, exc_info)
+    if msg:
+        msg = f'[{tag}] {msg}'
+    else:
+        msg = tag
+    return msg
+
+
+def exception(tag="", msg=None):
+    """
+    Log an error message and raise an exception.
+
+    :param tag: A tag to prepend to the message.
+    :param msg: The message to log.
+    """
+    msg = _chk_msg(tag, msg)
+    logger.error(msg)
+    raise Exception(msg)
+
+
+def error(tag="", msg=None):
+    """
+    Log an error message.
+
+    :param tag: A tag to prepend to the message.
+    :param msg: The message to log.
+    """
+    msg = _chk_msg(tag, msg)
+    logger.error(msg)
+
+
+def warn(tag="", msg=None):
+    """
+    Log a warning message.
+
+    :param tag: A tag to prepend to the message.
+    :param msg: The message to log.
+    """
+    msg = _chk_msg(tag, msg)
+    logger.warn(msg)
+
+
+def info(tag="", msg=None):
+    """
+    Log an info message.
+
+    :param tag: A tag to prepend to the message.
+    :param msg: The message to log.
+    """
+    msg = _chk_msg(tag, msg)
+    logger.info(msg)
+
+
+def debug(tag="", msg=None):
+    """
+    Log a debug message.
+
+    :param tag: A tag to prepend to the message.
+    :param msg: The message to log.
+    """
+    msg = _chk_msg(tag, msg)
+    logger.debug(msg)
