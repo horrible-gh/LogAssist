@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='LogAssist',
-    version='1.1.0',
+    version='1.1.1',
     description='LogAssist package',
     author='horrible-gh',
     author_email='shinjpn1@gmail.com',

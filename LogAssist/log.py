@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
@@ -41,7 +42,7 @@ def _get_file_timed_handler(config):
         os.makedirs(log_dir)
 
     handler = TimedRotatingFileHandler(
-        config['file_name'], when=config['when'], interval=config['interval'], backupCount=config['backup_count'])
+        config['file_name'], when=config['when'], interval=config['interval'], backupCount=config['backup_count'], encoding='utf-8')
 
     level = getattr(logging, log_level, logging.NOTSET)
     handler.setLevel(level)
@@ -65,6 +66,7 @@ def _get_console_handler(config):
     level = getattr(logging, log_level, logging.NOTSET)
     console_handler.setLevel(level)
     console_handler.setFormatter(logging.Formatter(log_format))
+    console_handler.stream = open(sys.stdout.fileno(), mode='w', encoding='utf-8', buffering=1)
 
     return console_handler
 
