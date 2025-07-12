@@ -27,9 +27,9 @@ import LogAssist.log as Logger
 2. Initialize the logger with your desired settings:
 
 ```python
-Logger.init(config=my_config_dictionary)
+Logger.logger_init(config=my_config_dictionary)
 # or
-Logger.init()
+Logger.logger_init()
 ```
 
 3. Use the logger in your code:
