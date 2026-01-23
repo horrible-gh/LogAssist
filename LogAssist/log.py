@@ -77,10 +77,16 @@ def logger_init(config=None):
 
     :param config: A dictionary containing the logger configuration. If None, uses global_config.
     """
+    global initialized
     global global_config
+
+    if initialized:
+        return
+
     if config is None:
         config = global_config
 
+    logger.handlers.clear()
     logger.setLevel(config['base']['level'].upper())
 
     timed_config = config.get("file_timed", None)
@@ -91,7 +97,6 @@ def logger_init(config=None):
     if console_config:
         logger.addHandler(_get_console_handler(console_config))
 
-    global initialized
     initialized = True
 
 
