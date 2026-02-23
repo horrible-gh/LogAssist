@@ -118,6 +118,16 @@ def _chk_msg(tag="", msg=None) -> str:
         msg = tag
     return msg
 
+def critical(tag="", msg=None):
+    """
+    Log a critical message and raise an exception.
+
+    :param tag: A tag to prepend to the message.
+    :param msg: The message to log.
+    """
+    msg = _chk_msg(tag, msg)
+    logger.critical(msg)
+    raise Exception(msg)
 
 def exception(tag="", msg=None):
     """
@@ -142,6 +152,16 @@ def error(tag="", msg=None):
     logger.error(msg)
 
 
+def warning(tag="", msg=None):
+    """
+    Log a warning message.
+
+    :param tag: A tag to prepend to the message.
+    :param msg: The message to log.
+    """
+    warn(tag, msg)
+
+
 def warn(tag="", msg=None):
     """
     Log a warning message.
@@ -150,8 +170,7 @@ def warn(tag="", msg=None):
     :param msg: The message to log.
     """
     msg = _chk_msg(tag, msg)
-    logger.warn(msg)
-
+    logger.warning(msg)
 
 def info(tag="", msg=None):
     """
