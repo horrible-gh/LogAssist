@@ -2,6 +2,7 @@ import os
 import sys
 import logging
 from logging.handlers import TimedRotatingFileHandler
+import traceback
 
 logger = logging.getLogger(__name__)
 initialized = False
@@ -127,7 +128,10 @@ def critical(tag="", msg=None):
     """
     msg = _chk_msg(tag, msg)
     logger.critical(msg)
-    raise Exception(msg)
+    try:
+        raise Exception(msg)
+    except Exception:
+        logger.critical(traceback.format_exc())
 
 def exception(tag="", msg=None):
     """
@@ -137,8 +141,11 @@ def exception(tag="", msg=None):
     :param msg: The message to log.
     """
     msg = _chk_msg(tag, msg)
-    logger.error(msg)
-    raise Exception(msg)
+    logger.exception(msg)
+    try:
+        raise Exception(msg)
+    except Exception:
+        logger.exception(traceback.format_exc())
 
 
 def error(tag="", msg=None):
@@ -150,7 +157,10 @@ def error(tag="", msg=None):
     """
     msg = _chk_msg(tag, msg)
     logger.error(msg)
-    raise Exception(msg)
+    try:
+        raise Exception(msg)
+    except Exception:
+        logger.error(traceback.format_exc())
 
 
 def warning(tag="", msg=None):
