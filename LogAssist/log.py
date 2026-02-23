@@ -150,6 +150,7 @@ def error(tag="", msg=None):
     """
     msg = _chk_msg(tag, msg)
     logger.error(msg)
+    raise Exception(msg)
 
 
 def warning(tag="", msg=None):
