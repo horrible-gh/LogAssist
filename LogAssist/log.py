@@ -11,6 +11,7 @@ global_config = {
     "base": {
         "name": "MyLogger",
         "level": "debug",
+        "trace_output": "true",
     },
     "console": {
         "level": "debug",
@@ -26,6 +27,7 @@ global_config = {
     }
 }
 
+trace_output = global_config['base'].get('trace_output', 'false').lower() == 'true'
 
 def _get_file_timed_handler(config):
     """
@@ -128,10 +130,11 @@ def critical(tag="", msg=None):
     """
     msg = _chk_msg(tag, msg)
     logger.critical(msg)
-    try:
-        raise Exception(msg)
-    except Exception:
-        logger.critical(traceback.format_exc())
+    if trace_output:
+        try:
+            raise Exception(msg)
+        except Exception:
+            logger.critical(traceback.format_exc())
 
 def exception(tag="", msg=None):
     """
@@ -142,10 +145,11 @@ def exception(tag="", msg=None):
     """
     msg = _chk_msg(tag, msg)
     logger.exception(msg)
-    try:
-        raise Exception(msg)
-    except Exception:
-        logger.exception(traceback.format_exc())
+    if trace_output:
+        try:
+            raise Exception(msg)
+        except Exception:
+            logger.exception(traceback.format_exc())
 
 
 def error(tag="", msg=None):
@@ -157,10 +161,11 @@ def error(tag="", msg=None):
     """
     msg = _chk_msg(tag, msg)
     logger.error(msg)
-    try:
-        raise Exception(msg)
-    except Exception:
-        logger.error(traceback.format_exc())
+    if trace_output:
+        try:
+            raise Exception(msg)
+        except Exception:
+            logger.error(traceback.format_exc())
 
 
 def warning(tag="", msg=None):

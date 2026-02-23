@@ -53,7 +53,8 @@ Example Usage:
 {
     "base": {
         "name": "MyLogger",
-        "level": "debug"
+        "level": "debug",
+        "trace_output": "true"
     },
     "console": {
         "level": "debug",
